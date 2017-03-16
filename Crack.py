@@ -108,34 +108,37 @@ bg = Image.open("bg.png","r")
 fullbg = Image.open("fullbg.png","r")
 rows = 2  # 行
 columns = 26  # 列
-sliceWidth = 12  # 列宽
+sliceWidth = 10  # 列宽
 sliceHeight = 58  # 行高
 #  创建恢复后图像
-recoverBg = Image.new("RGBA", (columns * sliceWidth, rows * sliceHeight), (0, 255, 0))
-recoverFullBg = Image.new("RGBA", (columns * sliceWidth, rows * sliceHeight), (0, 255, 0))
+recoverBg = Image.new("RGBA", (columns * sliceWidth, rows * sliceHeight))
+recoverFullBg = Image.new("RGBA", (columns * sliceWidth, rows * sliceHeight))
 
 n = [39, 38, 48, 49, 41, 40, 46, 47, 35, 34, 50, 51, 33, 32, 28, 29, 27, 26, 36, 37, 31, 30, 44, 45, 43, 42, 12, 13, 23, 22, 14, 15, 21, 20, 8, 9, 25, 24, 6, 7, 3, 2, 0, 1, 11, 10, 4, 5, 19, 18, 16, 17]
 startingX = 0
 startingY = 0
 offsetX = 0
-offsetY= 0
+offsetY = 0
 for row in range(rows):
-    for column in range(columns):
-        startingX = column * sliceWidth
-        startingY = row * sliceHeight
-        offsetX = n[row * columns + column] % 26 * 12 + 1
-        if n[row * columns + column] > 25:
-            offsetY = 116 / 2
-        else:
-            offsetY = 0
-print startingX, startingY, offsetX, offsetY
-
-for x in range(sliceWidth):
-    for y in range(sliceHeight):
-        recoverBg.putpixel(startingX + x, startingY + y,
-            bg.getpixel(offsetX + x, offsetY + y))
-        recoverBg.putpixel(startingX + x, startingY + y,
-            fullbg.getpixel(offsetX + x, offsetY + y))
+    try:
+        for column in range(columns):
+            startingX = column * sliceWidth
+            startingY = row * sliceHeight
+            offsetX = n[row * columns + column] % 26 * 12 + 1
+            if n[row * columns + column] > 25:
+                offsetY = int(116 / 2)
+            else:
+                offsetY = 0
+            for x in range(sliceWidth):
+                for y in range(sliceHeight):
+                    bgPix = bg.getpixel((offsetX + x, offsetY + y))
+                    recoverBg.putpixel((startingX + x, startingY + y),
+                                       bgPix)
+                    fullbgPix = fullbg.getpixel((offsetX + x, offsetY + y))
+                    recoverFullBg.putpixel((startingX + x, startingY + y),
+                                           fullbgPix)
+    except Exception:
+        continue
 
 
 recoverBg.save("recoverBg.png", "PNG")
