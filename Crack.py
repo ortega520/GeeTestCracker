@@ -120,25 +120,22 @@ startingY = 0
 offsetX = 0
 offsetY = 0
 for row in range(rows):
-    try:
-        for column in range(columns):
-            startingX = column * sliceWidth
-            startingY = row * sliceHeight
-            offsetX = n[row * columns + column] % 26 * 12 + 1
-            if n[row * columns + column] > 25:
-                offsetY = int(116 / 2)
-            else:
-                offsetY = 0
-            for x in range(sliceWidth):
-                for y in range(sliceHeight):
-                    bgPix = bg.getpixel((offsetX + x, offsetY + y))
-                    recoverBg.putpixel((startingX + x, startingY + y),
+    for column in range(columns):
+        startingX = column * sliceWidth
+        startingY = row * sliceHeight
+        offsetX = n[row * columns + column] % 26 * 12 + 1
+        if n[row * columns + column] > 25:
+            offsetY = int(116 / 2)
+        else:
+            offsetY = 0
+        for x in range(sliceWidth):
+            for y in range(sliceHeight):
+                bgPix = bg.getpixel((offsetX + x, offsetY + y))
+                recoverBg.putpixel((startingX + x, startingY + y),
                                        bgPix)
-                    fullbgPix = fullbg.getpixel((offsetX + x, offsetY + y))
-                    recoverFullBg.putpixel((startingX + x, startingY + y),
+                fullbgPix = fullbg.getpixel((offsetX + x, offsetY + y))
+                recoverFullBg.putpixel((startingX + x, startingY + y),
                                            fullbgPix)
-    except Exception:
-        continue
 
 
 recoverBg.save("recoverBg.png", "PNG")
