@@ -33,19 +33,23 @@ res:
 geetest_1489633321850({"benchmark": false, "id": "ae30bbb08a4180588709602555b322fcf", "fullbg": "pictures/gt/895656306/895656306.jpg", "https": false, "xpos": 0, "challenge": "e30bbb08a4180588709602555b322fcf98", "hide_delay": 800, "ypos": 33, "fullpage": false, "feedback": "", "link": "", "gt": "1d2c042096e050f07cb35ff3df5afd92", "clean": true, "type": "slide", "static_servers": ["static.geetest.com/", "dn-staticdown.qbox.me/"], "api_server": "http://api.geetest.com/", "mobile": false, "theme_version": "3.2.0", "version": "5.10.10", "bg": "pictures/gt/895656306/bg/12398010a.jpg", "slice": "pictures/gt/895656306/slice/12398010a.png", "logo": false, "height": 116, "show_delay": 250, "product": "popup", "theme": "golden"})
 
 ***
-
+###下载图片  
+###恢复图片  
+###计算距离  
+***
 ###四号请求:
 
-get和challenge参数已有  
-passtime 应该是耗时，给个随机数即可  
+gt和challenge参数已有  
+passtime 耗时
 imload ?  
 userresponse 明显是最终计算出来的滑块长度通过加密后的值  
+a 这个是什么鬼?
 
 req:GET  
 http://api.geetest.com/ajax.php?gt=1d2c042096e050f07cb35ff3df5afd92&challenge=035c84f8e9230e7b46865d5f68825e0b78&userresponse=82282288cddcb&passtime=1614&imgload=60&a=C--%2C--%2C----%2C-%2C-%2C----(!!%3Atstyty(t(tytysstssstusst!*((!)((!)(!)(!*y(y!)(yyytysstssstsssttyt((t(ttsssttsysstssstssst(!!(q6%2C4-2020111919%3A10111%24)L911911111111111112020111119EU9111120113%2F1111191111111M9%3F03%24)A%24)a%24)L%24.m&callback=geetest_1489721184474
 
 res:  
-
+geetest_1489736502424({"success": 1, "message":"success", "validate":"fe2b95dbd7ec5147c3663b410d47ce2c", "score":1})
 
 
 ***
@@ -56,11 +60,11 @@ req: POST
 http://www.gsxt.gov.cn/corp-query-search-1.html
 
 param:  
-tab=ent_tab  
-token=44593646  
-searchword=xxx  
-geetest_challenge=c2b0c5ffd7d9b9c984c99651013720e263  
-geetest_validate=e7841308e7655fb2b15e4aeb4efd3eeb  
+tab=ent_tab    未知含义
+token=44593646  未知含义  
+searchword=xxx  搜索关键字
+geetest_challenge=c2b0c5ffd7d9b9c984c99651013720e263  challenge已知  
+geetest_validate=e7841308e7655fb2b15e4aeb4efd3eeb    validate通过四号请求获取
 geetest_seccode=e7841308e7655fb2b15e4aeb4efd3eeb|jordan  
 
 res:  
