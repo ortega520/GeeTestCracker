@@ -60,7 +60,7 @@ req: POST
 http://www.gsxt.gov.cn/corp-query-search-1.html
 
 param:  
-tab=ent_tab    未知含义
+tab=ent_tab    未知含义  
 token=44593646  未知含义  
 searchword=xxx  搜索关键字
 geetest_challenge=c2b0c5ffd7d9b9c984c99651013720e263  challenge已知  
