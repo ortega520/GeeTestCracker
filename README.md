@@ -40,10 +40,10 @@ geetest_1489633321850({"benchmark": false, "id": "ae30bbb08a4180588709602555b322
 ###四号请求:
 
 gt和challenge参数已有  
-passtime 耗时
-imload ?  
-userresponse 明显是最终计算出来的滑块长度通过加密后的值  
-a 这个是什么鬼?
+passtime 耗时  
+imload 随机数  
+userresponse 明显是最终计算出来的滑块长度通过a加密后的值  
+a ??????
 
 req:GET  
 http://api.geetest.com/ajax.php?gt=1d2c042096e050f07cb35ff3df5afd92&challenge=035c84f8e9230e7b46865d5f68825e0b78&userresponse=82282288cddcb&passtime=1614&imgload=60&a=C--%2C--%2C----%2C-%2C-%2C----(!!%3Atstyty(t(tytysstssstusst!*((!)((!)(!)(!*y(y!)(yyytysstssstsssttyt((t(ttsssttsysstssstssst(!!(q6%2C4-2020111919%3A10111%24)L911911111111111112020111119EU9111120113%2F1111191111111M9%3F03%24)A%24)a%24)L%24.m&callback=geetest_1489721184474
