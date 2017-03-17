@@ -3,6 +3,7 @@ import urllib2
 import time
 import random
 import json
+import ImageUtil
 from PIL import Image
 
 print ""
@@ -10,7 +11,7 @@ print ""
 # 一号包
 rad = random.randrange(0, 10000)
 now = str(int(time.time()) * 100 + rad) + "0"
-packoneHeader ={
+packoneHeader = {
     'Host': 'www.gsxt.gov.cn',
     'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0',
     'Accept': 'application/json, text/javascript, */*; q=0.01',
@@ -39,7 +40,8 @@ packtwoHeader = {
     'Cookie': 'GeeTestUser=53c440a337719bb4a6acf620fb256e39; Hm_lvt_25b04a5e7a64668b9b88e2711fb5f0c4=1489631119,1489632094,1489632490; _ga=GA1.2.799249996.1489631119; sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%2215ad4ef086731f-019423a1b707d6-76276751-2073600-15ad4ef0868355%22%7D; sensorsdata_is_new_user=true; _qddaz=QD.sp78ag.9d3o5g.j0brwo9a; Hm_lpvt_25b04a5e7a64668b9b88e2711fb5f0c4=1489632648',
     'Connection': 'keep-alive',
 }
-request = urllib2.Request("http://api.geetest.com/gettype.php?gt=" + one['gt'] + "&callback=geetest_" + now, headers=packtwoHeader)
+request = urllib2.Request("http://api.geetest.com/gettype.php?gt=" + one['gt'] + "&callback=geetest_" + now,
+                          headers=packtwoHeader)
 result = urllib2.urlopen(request).read()
 result = result[22:-1]
 print "二号包:   " + result + "\n"
@@ -60,13 +62,14 @@ packthreeHeader = {
 }
 request = urllib2.Request("http://api.geetest.com/get.php?"
                           "gt=" + one['gt'] + "&"
-                          "challenge="+one['challenge']+"&"
-                          "product=popup&"
-                          "offline=false&"
-                          "protocol=&"
-                          "path=/static/js/geetest.5.10.10.js&"
-                          "type=slide&"
-                          "callback=geetest_" + now, headers=packthreeHeader)
+                                              "challenge=" + one['challenge'] + "&"
+                                                                                "product=popup&"
+                                                                                "offline=false&"
+                                                                                "protocol=&"
+                                                                                "path=/static/js/geetest.5.10.10.js&"
+                                                                                "type=slide&"
+                                                                                "callback=geetest_" + now,
+                          headers=packthreeHeader)
 result = urllib2.urlopen(request).read()
 result = result[22:-1]
 print "三号包:   " + result + "\n"
@@ -99,13 +102,12 @@ fullbgResult = urllib2.urlopen(request)
 with open("fullbg.png", "wb") as f:
     f.write(fullbgResult.read())
 
-
-#  图像还原
+# 图像还原
 #  X偏移值: (n[i] % 26 * 12 + 1)
 #  Y偏移值: (n[i] > 25 ? f.config.height / 2 : 0)
 # 恢复前图像
-bg = Image.open("bg.png","r")
-fullbg = Image.open("fullbg.png","r")
+bg = Image.open("bg.png", "r")
+fullbg = Image.open("fullbg.png", "r")
 rows = 2  # 行
 columns = 26  # 列
 sliceWidth = 10  # 列宽
@@ -114,7 +116,8 @@ sliceHeight = 58  # 行高
 recoverBg = Image.new("RGBA", (columns * sliceWidth, rows * sliceHeight))
 recoverFullBg = Image.new("RGBA", (columns * sliceWidth, rows * sliceHeight))
 
-n = [39, 38, 48, 49, 41, 40, 46, 47, 35, 34, 50, 51, 33, 32, 28, 29, 27, 26, 36, 37, 31, 30, 44, 45, 43, 42, 12, 13, 23, 22, 14, 15, 21, 20, 8, 9, 25, 24, 6, 7, 3, 2, 0, 1, 11, 10, 4, 5, 19, 18, 16, 17]
+n = [39, 38, 48, 49, 41, 40, 46, 47, 35, 34, 50, 51, 33, 32, 28, 29, 27, 26, 36, 37, 31, 30, 44, 45, 43, 42, 12, 13, 23,
+     22, 14, 15, 21, 20, 8, 9, 25, 24, 6, 7, 3, 2, 0, 1, 11, 10, 4, 5, 19, 18, 16, 17]
 startingX = 0
 startingY = 0
 offsetX = 0
@@ -132,11 +135,23 @@ for row in range(rows):
             for y in range(sliceHeight):
                 bgPix = bg.getpixel((offsetX + x, offsetY + y))
                 recoverBg.putpixel((startingX + x, startingY + y),
-                                       bgPix)
+                                   bgPix)
                 fullbgPix = fullbg.getpixel((offsetX + x, offsetY + y))
                 recoverFullBg.putpixel((startingX + x, startingY + y),
-                                           fullbgPix)
+                                       fullbgPix)
 
-
+# 保存恢复后图像
 recoverBg.save("recoverBg.png", "PNG")
 recoverFullBg.save("recoverFullBg.png", "PNG")
+
+# 计算缺块的距离
+breakFlag = 0
+for x in range(recoverBg.size[0]):
+    for y in range(recoverBg.size[1]):
+        isSimilar = ImageUtil.pixSimilar(recoverBg.getpixel((x, y)), recoverFullBg.getpixel((x, y)))
+        if isSimilar is False:
+            print "缺块距离:  " + str(x - 5)  # -5是因为滑块图片自带+5px的向右偏移
+            breakFlag = 1
+            break
+    if breakFlag == 1:
+        break
