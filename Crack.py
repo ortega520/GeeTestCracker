@@ -5,6 +5,7 @@ import random
 import json
 import ImageUtil
 from PIL import Image
+import FourthPacJsUtil
 
 print ""
 
@@ -146,12 +147,38 @@ recoverFullBg.save("recoverFullBg.png", "PNG")
 
 # 计算缺块的距离
 breakFlag = 0
+length = 0
 for x in range(recoverBg.size[0]):
     for y in range(recoverBg.size[1]):
         isSimilar = ImageUtil.pixSimilar(recoverBg.getpixel((x, y)), recoverFullBg.getpixel((x, y)))
         if isSimilar is False:
             print "缺块距离:  " + str(x - 5)  # -5是因为滑块图片自带+5px的向右偏移
+            length = x - 5
             breakFlag = 1
             break
     if breakFlag == 1:
         break
+
+# 四号包
+# 计算参数
+rad = random.randrange(0, 10000)
+now = str(int(time.time()) * 100 + rad) + "0"
+pacfourHeader = {
+    'Host': 'api.geetest.com',
+    'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0',
+    'Accept': '*/*',
+    'Accept-Language': 'en-US,en;q=0.5',
+    'Accept-Encoding': 'gzip, deflate',
+    'Referer': 'http://www.gsxt.gov.cn/index.html',
+    'Cookie': 'GeeTestUser=53c440a337719bb4a6acf620fb256e39; Hm_lvt_25b04a5e7a64668b9b88e2711fb5f0c4=1489631119,1489632094,1489632490,1489736218; _ga=GA1.2.799249996.1489631119; sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%2215ad4ef086731f-019423a1b707d6-76276751-2073600-15ad4ef0868355%22%7D; _qddaz=QD.sp78ag.9d3o5g.j0brwo9a',
+    'Connection': 'keep-alive'
+}
+trace = FourthPacJsUtil.geeTrace(length)  # 获取拖拽轨迹
+request = urllib2.Request("http://api.geetest.com/ajax.php?"
+                          "gt=" + one['gt'] + "&"
+                                              "challenge=" + one['challenge'] + "&"
+                          "userresponse=" + FourthPacJsUtil.getUserresponse(length, one['challenge']) + "&"
+                          "passtime=" + FourthPacJsUtil.getPasstime(trace) + "&"
+                          "imgload=" + FourthPacJsUtil.getImload() + "&"
+                          "a=" + FourthPacJsUtil.getA(trace) + "&"
+                          "callback=geetest_" + now, headers=pacfourHeader)

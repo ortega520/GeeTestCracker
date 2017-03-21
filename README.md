@@ -40,7 +40,7 @@ geetest_1489633321850({"benchmark": false, "id": "ae30bbb08a4180588709602555b322
 ###四号请求:
 
 gt 和 challenge 参数已有  
-passtime 是本地计算的通过时间，然后由于未知的原因，服务器能够验证这个参数的合法性  
+passtime 是本地计算的通过时间，由于加密参数a包含一个鼠标拖拽轨迹数组，数组包含消耗时间，所以服务器能够验证这个参数的合法性  
 imload 随机数  
 userresponse 通过移动距离m和challenge计算得出，加密算法没有外部参数
 a ??????
