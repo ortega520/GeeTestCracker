@@ -152,13 +152,12 @@ for x in range(recoverBg.size[0]):
     for y in range(recoverBg.size[1]):
         isSimilar = ImageUtil.pixSimilar(recoverBg.getpixel((x, y)), recoverFullBg.getpixel((x, y)))
         if isSimilar is False:
-            print "缺块距离:  " + str(x - 5)  # -5是因为滑块图片自带+5px的向右偏移
             length = x - 5
             breakFlag = 1
             break
     if breakFlag == 1:
         break
-
+print "缺块距离" + str(length)
 # 四号包
 # 计算参数
 rad = random.randrange(0, 10000)
@@ -174,11 +173,22 @@ pacfourHeader = {
     'Connection': 'keep-alive'
 }
 trace = FourthPacJsUtil.geeTrace(length)  # 获取拖拽轨迹
+print trace
+gt = str(three['gt'])
+challenge = str(three['challenge'])
+userresponse = FourthPacJsUtil.getUserresponse(str(length), challenge)
+passtime = str(FourthPacJsUtil.getPasstime(trace))
+imload = str(FourthPacJsUtil.getImload())
+a = urllib2.quote(str(FourthPacJsUtil.getA(trace)))
 request = urllib2.Request("http://api.geetest.com/ajax.php?"
-                          "gt=" + one['gt'] + "&"
-                                              "challenge=" + one['challenge'] + "&"
-                          "userresponse=" + FourthPacJsUtil.getUserresponse(length, one['challenge']) + "&"
-                          "passtime=" + FourthPacJsUtil.getPasstime(trace) + "&"
-                          "imgload=" + FourthPacJsUtil.getImload() + "&"
-                          "a=" + FourthPacJsUtil.getA(trace) + "&"
-                          "callback=geetest_" + now, headers=pacfourHeader)
+                          "gt=" + gt + "&"
+                          "challenge=" + challenge + "&"
+                          "userresponse=" + userresponse + "&"
+                          "passtime=" + passtime + "&"
+                          "imgload=" + imload + "&"
+                          "a=" + a + "&"
+                          "callback=geetest_" + now,
+                          headers=pacfourHeader)
+result = urllib2.urlopen(request).read()
+print "\n四号请求:\n" + "gt:" + gt + "\nchallenge:" + challenge + "\nuserresponse:" + userresponse + "\n" + "passtime:" + passtime + "\n" + "imload:" + imload + "\n" + "a:" + a + "\n"
+print "四号包:   " + result + "\n"
